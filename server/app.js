@@ -9,8 +9,13 @@ const morgan = require('morgan');
 
 app.use(morgan('dev'));
 
+const allowedOrigins = [
+    'http://localhost:5173',             // local dev
+    'https://your-frontend.onrender.com' // your deployed frontend
+  ];
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: allowedOrigins,
+
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
@@ -19,16 +24,12 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 
-const PORT = 5000;
-const host = 'localhost';
+const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, host, (err) => {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log(`Server running on port ${PORT}`);
-    }
-});
 
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+  
 
 
