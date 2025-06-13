@@ -10,22 +10,23 @@ const app = express();
 app.use(morgan('dev'));
 
 const allowedOrigins = [
-  'http://localhost:5173',                  // for local frontend dev
-  'https://authentication-drab-alpha.vercel.app/'        // replace with your actual deployed frontend URL
-];
-
-// ✅ CORS setup
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('CORS not allowed from this origin'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-}));
+    'http://localhost:5173',
+    'https://authentication-drab-alpha.vercel.app'
+  ];
+  
+  app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.error('CORS blocked for origin:', origin); // Optional: helpful for debugging
+        callback(new Error('CORS not allowed from this origin'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+  }));
+  
 
 
 app.use(cookieParser());
